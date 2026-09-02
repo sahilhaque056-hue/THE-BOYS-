@@ -1,895 +1,807 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07150d">
 
-  <title>BE LIKE SAHIL • Game Zone</title>
+<title>Forest Quest | Be Like Sahil</title>
 
-  <meta name="theme-color" content="#070712">
-  <meta name="description" content="Welcome to Be Like Sahil Game Zone">
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+html{
+    scroll-behavior:smooth;
+}
 
-    html {
-      scroll-behavior: smooth;
-    }
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    color:#f2fff5;
+    font-family:Inter,Arial,sans-serif;
+    background:
+        radial-gradient(circle at 50% 10%,rgba(61,180,91,.18),transparent 35%),
+        linear-gradient(180deg,#06140b 0%,#081b10 45%,#030a06 100%);
+}
 
-    body {
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: #fff;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(138,43,226,.25), transparent 30%),
-        radial-gradient(circle at 80% 10%, rgba(0,212,255,.18), transparent 28%),
-        radial-gradient(circle at 50% 90%, rgba(255,0,128,.15), transparent 35%),
-        #070712;
-      overflow-x: hidden;
-    }
+/* FOREST BACKGROUND */
 
-    /* =========================
-       BACKGROUND EFFECT
-    ========================== */
+.forest{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:-2;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .18;
-      background-image:
-        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
-      background-size: 45px 45px;
-      mask-image: linear-gradient(to bottom, black, transparent);
-      z-index: -2;
-    }
+.moon{
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    top:8%;
+    right:10%;
+    background:#dffff0;
+    box-shadow:
+        0 0 50px rgba(180,255,211,.25),
+        0 0 130px rgba(71,214,111,.15);
+    opacity:.85;
+}
 
-    .glow {
-      position: fixed;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: .35;
-      pointer-events: none;
-      z-index: -1;
-    }
+.fog{
+    position:absolute;
+    width:600px;
+    height:180px;
+    border-radius:50%;
+    filter:blur(60px);
+    background:rgba(99,190,121,.08);
+    bottom:12%;
+    left:-10%;
+    animation:fogMove 12s ease-in-out infinite alternate;
+}
 
-    .glow.one {
-      background: #7b2cff;
-      top: 10%;
-      left: -100px;
-    }
+@keyframes fogMove{
+    from{transform:translateX(0);}
+    to{transform:translateX(45vw);}
+}
 
-    .glow.two {
-      background: #00d9ff;
-      bottom: 5%;
-      right: -100px;
-    }
+.tree{
+    position:absolute;
+    bottom:0;
+    width:0;
+    height:0;
+    border-left:90px solid transparent;
+    border-right:90px solid transparent;
+    border-bottom:260px solid #020704;
+    opacity:.9;
+}
 
-    /* =========================
-       NAVBAR
-    ========================== */
+.tree:nth-child(3){
+    left:2%;
+    transform:scale(1.3);
+}
 
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+.tree:nth-child(4){
+    left:22%;
+    transform:scale(.8);
+}
 
-      width: 100%;
-      padding: 16px 6%;
+.tree:nth-child(5){
+    right:5%;
+    transform:scale(1.4);
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+.tree:nth-child(6){
+    right:25%;
+    transform:scale(.75);
+}
 
-      background: rgba(7,7,18,.72);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
+/* NAV */
 
-    .logo {
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:100;
+    padding:18px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(3,12,7,.65);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(151,255,174,.08);
+}
 
-    .logo span {
-      color: #9d4edd;
-    }
+.logo{
+    font-weight:900;
+    letter-spacing:1px;
+}
 
-    .nav-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+.logo span{
+    color:#69e88b;
+}
 
-      font-size: 12px;
-      color: #b9b9c9;
-    }
+.status{
+    color:#8ebd9a;
+    font-size:12px;
+}
 
-    .online-dot {
-      width: 8px;
-      height: 8px;
-      background: #00ff88;
-      border-radius: 50%;
-      box-shadow: 0 0 15px #00ff88;
-    }
+.dot{
+    display:inline-block;
+    width:7px;
+    height:7px;
+    margin-right:6px;
+    border-radius:50%;
+    background:#65ff91;
+    box-shadow:0 0 12px #65ff91;
+}
 
-    /* =========================
-       HERO
-    ========================== */
+/* HERO */
 
-    .hero {
-      min-height: 85vh;
-      padding: 80px 6% 50px;
+.hero{
+    min-height:100vh;
+    padding:130px 7% 80px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.hero-content{
+    max-width:900px;
+}
 
-      text-align: center;
-    }
+.eyebrow{
+    display:inline-block;
+    padding:9px 16px;
+    margin-bottom:25px;
+    border:1px solid rgba(107,235,139,.25);
+    border-radius:100px;
+    background:rgba(74,184,97,.08);
+    color:#8df3a7;
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
 
-    .hero-content {
-      max-width: 900px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 9px 15px;
-      margin-bottom: 22px;
-
-      border: 1px solid rgba(157,78,221,.45);
-      border-radius: 999px;
-
-      background: rgba(157,78,221,.10);
-      color: #d8b4ff;
-
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-
-      box-shadow: 0 0 25px rgba(157,78,221,.12);
-    }
-
-    .hero h1 {
-      font-size: clamp(48px, 10vw, 105px);
-      line-height: .9;
-      font-weight: 1000;
-      letter-spacing: -5px;
-
-      background: linear-gradient(
-        90deg,
-        #fff,
-        #b76cff,
-        #55ddff,
+h1{
+    font-size:clamp(55px,11vw,120px);
+    line-height:.85;
+    letter-spacing:-6px;
+    font-weight:1000;
+    background:linear-gradient(
+        120deg,
+        #f3fff5,
+        #65e889,
+        #b7ffca,
         #fff
-      );
+    );
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
 
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+.hero p{
+    max-width:600px;
+    margin:28px auto 0;
+    color:#9ab6a2;
+    line-height:1.8;
+}
 
-      background-size: 250% auto;
-      animation: gradientMove 5s linear infinite;
+/* LEAF BUTTON */
+
+.leaf-btn{
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    margin-top:35px;
+    padding:15px 25px;
+    color:#06200e;
+    text-decoration:none;
+    font-weight:900;
+    border:0;
+    cursor:pointer;
+    background:linear-gradient(135deg,#9dffb5,#47d875);
+    border-radius:65% 35% 65% 35%;
+    transform:rotate(-2deg);
+    box-shadow:
+        0 10px 40px rgba(60,215,105,.2),
+        inset 0 0 0 1px rgba(255,255,255,.35);
+    transition:.25s ease;
+}
+
+.leaf-btn:hover{
+    transform:rotate(2deg) scale(1.06);
+    box-shadow:0 15px 55px rgba(60,215,105,.35);
+}
+
+.leaf-btn:active{
+    transform:scale(.96);
+}
+
+.scroll{
+    margin-top:65px;
+    color:#63806b;
+    font-size:11px;
+    letter-spacing:3px;
+    animation:float 1.8s infinite;
+}
+
+@keyframes float{
+    50%{transform:translateY(8px);}
+}
+
+/* GAME SECTION */
+
+section{
+    padding:100px 6%;
+}
+
+.heading{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.heading small{
+    color:#6fea8d;
+    letter-spacing:3px;
+    font-size:11px;
+}
+
+.heading h2{
+    margin-top:12px;
+    font-size:clamp(32px,6vw,58px);
+}
+
+.heading p{
+    margin-top:12px;
+    color:#708b77;
+}
+
+.games{
+    max-width:1150px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    position:relative;
+    padding:27px;
+    min-height:235px;
+    overflow:hidden;
+    border-radius:28px;
+    background:linear-gradient(
+        145deg,
+        rgba(121,255,148,.09),
+        rgba(255,255,255,.025)
+    );
+    border:1px solid rgba(157,255,174,.1);
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(110,239,139,.4);
+    box-shadow:0 25px 70px rgba(0,0,0,.35);
+}
+
+.icon{
+    width:72px;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:25px 15px 25px 15px;
+    background:rgba(102,232,132,.09);
+    border:1px solid rgba(130,255,157,.1);
+    font-size:38px;
+    margin-bottom:23px;
+}
+
+.card h3{
+    font-size:20px;
+}
+
+.card p{
+    margin-top:9px;
+    color:#718a78;
+    font-size:13px;
+    line-height:1.6;
+}
+
+.card-label{
+    display:block;
+    margin-top:20px;
+    color:#6de68b;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+/* CREATOR */
+
+.creator{
+    max-width:800px;
+    margin:auto;
+    padding:60px 25px;
+    text-align:center;
+    border-radius:35px;
+    background:rgba(94,209,119,.055);
+    border:1px solid rgba(147,255,165,.1);
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    margin:auto auto 22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:60% 40% 60% 40%;
+    background:linear-gradient(135deg,#2e8b57,#8cffaa);
+    font-size:42px;
+    box-shadow:0 0 45px rgba(77,231,116,.2);
+}
+
+.creator p{
+    margin-top:10px;
+    color:#718878;
+}
+
+/* FOOTER */
+
+footer{
+    padding:40px 20px;
+    text-align:center;
+    color:#526458;
+    font-size:12px;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+/* ENTER OVERLAY */
+
+#enterScreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+    background:
+        radial-gradient(circle,rgba(67,191,94,.2),transparent 45%),
+        #031008;
+    transition:.45s;
+}
+
+.enter-box{
+    text-align:center;
+    max-width:500px;
+}
+
+.enter-leaf{
+    font-size:80px;
+    filter:drop-shadow(0 0 25px rgba(99,255,135,.3));
+    animation:leafFloat 2s infinite;
+}
+
+@keyframes leafFloat{
+    50%{
+        transform:translateY(-10px) rotate(5deg);
+    }
+}
+
+.enter-box h2{
+    margin-top:15px;
+    font-size:34px;
+}
+
+.enter-box p{
+    margin-top:12px;
+    color:#75927d;
+    line-height:1.6;
+}
+
+.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+/* FLASH */
+
+.flash{
+    animation:screenFlash .16s linear 4;
+}
+
+@keyframes screenFlash{
+    0%,100%{filter:brightness(1);}
+    50%{filter:brightness(4);}
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    nav{
+        padding:15px 5%;
     }
 
-    @keyframes gradientMove {
-      to {
-        background-position: 250% center;
-      }
+    .status{
+        display:none;
     }
 
-    .hero h2 {
-      margin-top: 22px;
-      color: #aaaabd;
-      font-size: clamp(16px, 3vw, 22px);
-      font-weight: 400;
+    .hero{
+        padding-left:5%;
+        padding-right:5%;
     }
 
-    .hero h2 b {
-      color: #fff;
+    h1{
+        letter-spacing:-4px;
     }
 
-    .scroll-hint {
-      margin-top: 55px;
-      color: #77778b;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      animation: bounce 1.7s infinite;
+    section{
+        padding:75px 5%;
     }
 
-    @keyframes bounce {
-      0%,100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(10px);
-      }
-    }
-
-    /* =========================
-       SECTION
-    ========================== */
-
-    section {
-      padding: 80px 6%;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 45px;
-    }
-
-    .section-title small {
-      color: #9d4edd;
-      font-weight: bold;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .section-title h2 {
-      margin-top: 10px;
-      font-size: clamp(30px, 5vw, 48px);
-    }
-
-    .section-title p {
-      margin-top: 10px;
-      color: #858599;
-    }
-
-    /* =========================
-       GAME GRID
-    ========================== */
-
-    .games {
-      max-width: 1150px;
-      margin: auto;
-
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
-
-      gap: 20px;
-    }
-
-    .game-card {
-      position: relative;
-      overflow: hidden;
-
-      padding: 28px;
-
-      min-height: 230px;
-
-      border-radius: 24px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.09),
-          rgba(255,255,255,.025)
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-
-      transition:
-        transform .35s ease,
-        border-color .35s ease,
-        box-shadow .35s ease;
-    }
-
-    .game-card::before {
-      content: "";
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      right: -60px;
-      top: -60px;
-
-      background: #9d4edd;
-      filter: blur(80px);
-      opacity: .18;
-    }
-
-    .game-card:hover {
-      transform: translateY(-9px);
-      border-color: rgba(183,108,255,.5);
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.35),
-        0 0 30px rgba(157,78,221,.12);
-    }
-
-    .game-icon {
-      width: 75px;
-      height: 75px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 20px;
-
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.08);
-
-      font-size: 42px;
-
-      margin-bottom: 22px;
-
-      box-shadow:
-        inset 0 0 25px rgba(255,255,255,.03);
-    }
-
-    .game-card h3 {
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-
-    .game-card p {
-      color: #858599;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .play-label {
-      display: inline-block;
-      margin-top: 18px;
-
-      color: #c996ff;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    /* =========================
-       AUDIO PANEL
-    ========================== */
-
-    .audio-section {
-      max-width: 900px;
-      margin: 20px auto;
-    }
-
-    .audio-box {
-      padding: 25px;
-
-      border-radius: 25px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(157,78,221,.12),
-          rgba(0,217,255,.06)
-        );
-
-      border: 1px solid rgba(255,255,255,.1);
-
-      text-align: center;
-    }
-
-    .music-icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-
-    .audio-box h3 {
-      margin-bottom: 8px;
-    }
-
-    .audio-box p {
-      color: #8d8d9e;
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
-
-    audio {
-      width: min(500px, 100%);
-    }
-
-    /* =========================
-       CREATOR
-    ========================== */
-
-    .creator {
-      max-width: 850px;
-      margin: auto;
-      padding: 50px 25px;
-
-      text-align: center;
-
-      border-radius: 30px;
-
-      background:
-        radial-gradient(
-          circle at center,
-          rgba(157,78,221,.13),
-          transparent 65%
-        );
-
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .avatar {
-      width: 90px;
-      height: 90px;
-
-      margin: auto auto 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: linear-gradient(
-        135deg,
-        #7b2cff,
-        #00d9ff
-      );
-
-      font-size: 40px;
-
-      box-shadow:
-        0 0 40px rgba(123,44,255,.35);
-    }
-
-    .creator h2 {
-      font-size: 30px;
-    }
-
-    .creator p {
-      margin-top: 10px;
-      color: #89899b;
-    }
-
-    .follow-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-
-      margin-top: 25px;
-      padding: 14px 25px;
-
-      color: white;
-      text-decoration: none;
-      font-weight: 800;
-
-      border-radius: 999px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #833ab4,
-          #fd1d1d,
-          #fcb045
-        );
-
-      box-shadow:
-        0 10px 35px rgba(253,29,29,.18);
-
-      transition: transform .25s ease;
-    }
-
-    .follow-btn:hover {
-      transform: scale(1.06);
-    }
-
-    /* =========================
-       FOOTER
-    ========================== */
-
-    footer {
-      padding: 35px 20px;
-
-      text-align: center;
-
-      border-top: 1px solid rgba(255,255,255,.07);
-
-      color: #666678;
-      font-size: 12px;
-    }
-
-    footer strong {
-      color: #aaaabd;
-    }
-
-    /* =========================
-       MOBILE
-    ========================== */
-
-    @media (max-width: 600px) {
-
-      nav {
-        padding: 14px 5%;
-      }
-
-      .nav-status {
-        display: none;
-      }
-
-      .hero {
-        min-height: 75vh;
-        padding-top: 50px;
-      }
-
-      .hero h1 {
-        letter-spacing: -3px;
-      }
-
-      section {
-        padding: 60px 5%;
-      }
-
-      .game-card {
-        min-height: 205px;
-      }
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-  <div class="glow one"></div>
-  <div class="glow two"></div>
+<!-- FOREST -->
+<div class="forest">
+    <div class="moon"></div>
+    <div class="fog"></div>
+    <div class="tree"></div>
+    <div class="tree"></div>
+    <div class="tree"></div>
+    <div class="tree"></div>
+</div>
 
-  <!-- =========================
-       NAVIGATION
-  ========================== -->
 
-  <nav>
+<!-- AUDIO -->
+<audio id="forestAudio" preload="auto" loop>
+    <source src="selfie.mp3" type="audio/mpeg">
+</audio>
+
+
+<!-- ENTRY -->
+<div id="enterScreen">
+
+    <div class="enter-box">
+
+        <div class="enter-leaf">🍃</div>
+
+        <h2>ENTER THE FOREST</h2>
+
+        <p>
+            A mysterious gaming experience is waiting
+            beyond the trees.
+        </p>
+
+        <button class="leaf-btn" id="enterBtn">
+            🍃 Enter Now
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- NAV -->
+<nav>
+
     <div class="logo">
-      BE<span>.</span>LIKE<span>_SAHIL</span>
+        BE<span>.</span>LIKE<span>_SAHIL</span>
     </div>
 
-    <div class="nav-status">
-      <span class="online-dot"></span>
-      GAME SERVER ONLINE
+    <div class="status">
+        <span class="dot"></span>
+        FOREST ONLINE
     </div>
-  </nav>
+
+</nav>
 
 
-  <!-- =========================
-       HERO
-  ========================== -->
-
-  <header class="hero">
+<!-- HERO -->
+<header class="hero">
 
     <div class="hero-content">
 
-      <div class="badge">
-        🎮 Welcome Player
-      </div>
+        <div class="eyebrow">
+            🌿 Welcome Explorer
+        </div>
 
-      <h1>
-        GAME<br>ZONE
-      </h1>
+        <h1>
+            FOREST<br>QUEST
+        </h1>
 
-      <h2>
-        Play. Explore. <b>Have Fun.</b>
-      </h2>
+        <p>
+            Enter a world hidden between the trees.
+            Discover games, explore the unknown and
+            enjoy the experience.
+        </p>
 
-      <div class="scroll-hint">
-        ↓ Scroll to enter the zone ↓
-      </div>
+        <a href="#games" class="leaf-btn">
+            🎮 Explore Games
+        </a>
+
+        <div class="scroll">
+            ↓ SCROLL INTO THE FOREST ↓
+        </div>
 
     </div>
 
-  </header>
+</header>
 
 
-  <!-- =========================
-       GAMES
-  ========================== -->
+<!-- GAMES -->
+<section id="games">
 
-  <section>
+    <div class="heading">
 
-    <div class="section-title">
-      <small>Choose Your Game</small>
+        <small>THE FOREST ARCADE</small>
 
-      <h2>🔥 Trending Games</h2>
+        <h2>Choose Your Quest</h2>
 
-      <p>
-        Your virtual gaming zone starts here.
-      </p>
+        <p>
+            Pick your path, brave explorer.
+        </p>
+
     </div>
 
 
     <div class="games">
 
-      <div class="game-card">
-        <div class="game-icon">🎯</div>
-
-        <h3>Target Rush</h3>
-
-        <p>
-          Test your aim and reaction speed.
-        </p>
-
-        <span class="play-label">
-          ⚡ READY TO PLAY
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">🚀</div>
-
-        <h3>Space Runner</h3>
-
-        <p>
-          Escape the galaxy and survive the mission.
-        </p>
-
-        <span class="play-label">
-          🚀 START MISSION
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">👾</div>
-
-        <h3>Pixel Attack</h3>
-
-        <p>
-          Enter the pixel world and defeat enemies.
-        </p>
-
-        <span class="play-label">
-          👾 ENTER GAME
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">🏎️</div>
-
-        <h3>Speed Race</h3>
-
-        <p>
-          Fast cars, crazy tracks and high speed.
-        </p>
-
-        <span class="play-label">
-          🏁 RACE NOW
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">⚔️</div>
-
-        <h3>Battle Arena</h3>
-
-        <p>
-          Prepare yourself for the ultimate battle.
-        </p>
-
-        <span class="play-label">
-          ⚔️ JOIN BATTLE
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">🧟</div>
-
-        <h3>Zombie Night</h3>
-
-        <p>
-          Survive the night and stay alive.
-        </p>
-
-        <span class="play-label">
-          🧟 SURVIVE
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">🏆</div>
-
-        <h3>Champion</h3>
-
-        <p>
-          Complete challenges and become the champion.
-        </p>
-
-        <span class="play-label">
-          🏆 PLAY NOW
-        </span>
-      </div>
-
-
-      <div class="game-card">
-        <div class="game-icon">🎮</div>
-
-        <h3>Coming Soon</h3>
-
-        <p>
-          Something crazy is coming very soon.
-        </p>
-
-        <span class="play-label">
-          🔒 LOCKED
-        </span>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       MUSIC
-  ========================== -->
-
-  <section>
-
-    <div class="audio-section">
-
-      <div class="audio-box">
-
-        <div class="music-icon">
-          🎵
+        <div class="card">
+            <div class="icon">🏹</div>
+            <h3>Forest Archer</h3>
+            <p>Test your accuracy deep inside the forest.</p>
+            <span class="card-label">READY TO PLAY</span>
         </div>
 
-        <h3>Zone Music</h3>
+        <div class="card">
+            <div class="icon">🐺</div>
+            <h3>Wolf Run</h3>
+            <p>Run through the wilderness and survive.</p>
+            <span class="card-label">START QUEST</span>
+        </div>
 
-        <p>
-          Scroll detected — attempting to start the music.
-        </p>
+        <div class="card">
+            <div class="icon">🗺️</div>
+            <h3>Lost Map</h3>
+            <p>Find the hidden path before night arrives.</p>
+            <span class="card-label">EXPLORE</span>
+        </div>
 
-        <audio id="bgMusic" controls loop preload="auto">
-          <source src="selfie.mp3" type="audio/mpeg">
-          Your browser does not support audio.
-        </audio>
+        <div class="card">
+            <div class="icon">🧙</div>
+            <h3>Forest Mage</h3>
+            <p>Discover ancient magic hidden among the trees.</p>
+            <span class="card-label">ENTER WORLD</span>
+        </div>
 
-      </div>
+        <div class="card">
+            <div class="icon">🐉</div>
+            <h3>Dragon Valley</h3>
+            <p>Enter the forbidden valley of legends.</p>
+            <span class="card-label">LOCKED QUEST</span>
+        </div>
+
+        <div class="card">
+            <div class="icon">🏆</div>
+            <h3>Forest Champion</h3>
+            <p>Complete every challenge and become the champion.</p>
+            <span class="card-label">COMING SOON</span>
+        </div>
 
     </div>
 
-  </section>
+</section>
 
 
-  <!-- =========================
-       CREATOR
-  ========================== -->
-
-  <section>
+<!-- CREATOR -->
+<section>
 
     <div class="creator">
 
-      <div class="avatar">
-        😎
-      </div>
+        <div class="avatar">🌿</div>
 
-      <h2>
-        Created by @be.like_sahil
-      </h2>
+        <h2>
+            Created by @be.like_sahil
+        </h2>
 
-      <p>
-        Follow for more prank & fun websites 🚀
-      </p>
+        <p>
+            Follow for more prank & creative websites.
+        </p>
 
-      <a
-        class="follow-btn"
-        href="https://www.instagram.com/be.like_sahil?igsi=MTF3eWhrZ3o1NWdzeQ=="
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        📸 Follow Me on Instagram
-      </a>
+        <a
+            class="leaf-btn"
+            href="https://www.instagram.com/be.like_sahil?igsi=MTF3eWhrZ3o1NWdzeQ=="
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            📸 Follow for More
+        </a>
 
     </div>
 
-  </section>
+</section>
 
 
-  <!-- =========================
-       FOOTER
-  ========================== -->
-
-  <footer>
-
+<footer>
     <strong>BE LIKE SAHIL</strong>
-
     <br><br>
-
     Made for entertainment & educational purposes.
-
     <br><br>
-
-    © 2026 • All Rights Reserved
-
-  </footer>
+    © 2026 Forest Quest
+</footer>
 
 
-  <!-- =========================
-       AUDIO SCRIPT
-  ========================== -->
+<script>
 
-  <script>
+const audio = document.getElementById("forestAudio");
+const enterScreen = document.getElementById("enterScreen");
+const enterBtn = document.getElementById("enterBtn");
 
-    const music = document.getElementById("bgMusic");
+let started = false;
 
-    let musicStarted = false;
 
-    function startMusic() {
+/* AUDIO + VIBRATION + FLASH */
 
-      if (musicStarted) return;
+function activateExperience(){
 
-      musicStarted = true;
+    if(started) return;
 
-      music.volume = 0.7;
+    started = true;
 
-      const playPromise = music.play();
+    /* LOUD VOLUME */
+    audio.volume = 1.0;
 
-      if (playPromise !== undefined) {
+    /*
+      Browser allows audio here because
+      this function is triggered by a real
+      user tap/click.
+    */
 
-        playPromise
-          .then(() => {
-            console.log("Music started.");
-          })
-          .catch(() => {
-            /*
-              Some browsers block audio autoplay.
+    audio.play().catch(function(error){
 
-              In that case, the browser's audio
-              controls remain available to the user.
-            */
+        console.log("Audio blocked:", error);
 
-            musicStarted = false;
+    });
 
-            console.log(
-              "Browser blocked autoplay. User interaction required."
-            );
-          });
-      }
+
+    /* PHONE VIBRATION */
+
+    if("vibrate" in navigator){
+
+        navigator.vibrate([
+            150,
+            60,
+            250,
+            80,
+            450
+        ]);
+
     }
 
 
-    /*
-      Scroll-based trigger.
+    /* SCREEN FLASH */
 
-      The first scroll event attempts to start
-      selfie.mp3.
-    */
+    document.body.classList.add("flash");
 
-    window.addEventListener(
-      "scroll",
-      startMusic,
-      {
-        once: true,
-        passive: true
-      }
-    );
+    setTimeout(function(){
+
+        document.body.classList.remove("flash");
+
+    },700);
 
 
-    /*
-      Extra fallback:
+    /* CLOSE ENTRY SCREEN */
 
-      If browser blocks scroll-based autoplay,
-      the first tap/click can start the music.
-    */
+    enterScreen.classList.add("hidden");
 
-    document.addEventListener(
-      "pointerdown",
-      startMusic,
-      {
-        once: true
-      }
-    );
+}
 
-  </script>
+
+/* GUARANTEED USER-GESTURE AUDIO START */
+
+enterBtn.addEventListener(
+    "click",
+    activateExperience
+);
+
+
+/*
+  Extra fallback:
+  first touch anywhere can start audio.
+*/
+
+document.addEventListener(
+    "touchstart",
+    activateExperience,
+    {
+        once:true,
+        passive:true
+    }
+);
+
+
+/*
+  Try autoplay as early as possible.
+  This may work in browsers where autoplay
+  permission is already available.
+*/
+
+window.addEventListener("load",function(){
+
+    audio.volume = 1.0;
+
+    audio.play().then(function(){
+
+        started = true;
+        enterScreen.classList.add("hidden");
+
+    }).catch(function(){
+
+        console.log(
+            "Autoplay blocked — waiting for user gesture."
+        );
+
+    });
+
+});
+
+
+/*
+  Attempt again on scroll.
+
+  IMPORTANT:
+  Browser autoplay policy may still reject
+  this because scroll is not guaranteed to
+  count as an activation gesture.
+*/
+
+window.addEventListener(
+    "scroll",
+    function(){
+
+        if(!started){
+
+            audio.volume = 1.0;
+
+            audio.play().then(function(){
+
+                started = true;
+                enterScreen.classList.add("hidden");
+
+            }).catch(function(){
+
+                console.log(
+                    "Scroll autoplay blocked by browser."
+                );
+
+            });
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+</script>
 
 </body>
 </html>
