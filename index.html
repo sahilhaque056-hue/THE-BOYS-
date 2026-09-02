@@ -805,3 +805,19 @@ window.addEventListener(
 
 </body>
 </html>
+<audio id="testAudio" controls preload="auto">
+  <source src="./selfie.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
+
+<script>
+const audio = document.getElementById("testAudio");
+
+audio.addEventListener("error", () => {
+  console.log("❌ Audio file load nahi hui");
+});
+
+audio.addEventListener("canplay", () => {
+  console.log("✅ Audio successfully loaded");
+});
+</script>
