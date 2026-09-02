@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Security Simulation</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #050505;
+      color: #00ff41;
+      font-family: monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #ff3333;
+      font-size: 34px;
+      text-shadow: 0 0 15px red;
+    }
+
+    p {
+      color: #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-family: monospace;
+      font-weight: bold;
+      color: white;
+      background: #c00;
+      border: 2px solid red;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 20px red;
+    }
+
+    button:hover {
+      background: red;
+    }
+
+    /* Fake virus screen */
+    #virusScreen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      color: red;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    #virusScreen.active {
+      display: flex;
+    }
+
+    #virusScreen h2 {
+      font-size: 42px;
+      animation: blink 0.7s infinite;
+    }
+
+    #virusScreen p {
+      color: #ff5555;
+    }
+
+    .warning {
+      font-size: 70px;
+      animation: shake 0.15s infinite;
+    }
+
+    .educational {
+      color: #00ff41 !important;
+      margin-top: 30px;
+    }
+
+    #exitBtn {
+      background: #222;
+      border-color: #00ff41;
+      color: #00ff41;
+      box-shadow: none;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0.25;
+      }
+    }
+
+    @keyframes shake {
+      0% { transform: translate(2px, 1px); }
+      50% { transform: translate(-2px, -1px); }
+      100% { transform: translate(1px, -2px); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>⚠ CYBER SECURITY LAB</h1>
+
+    <p>
+      This is a harmless educational malware simulation.
+    </p>
+
+    <button onclick="startSimulation()">
+      RUN VIRUS SIMULATION
+    </button>
+  </div>
+
+  <!-- Fake virus screen -->
+  <div id="virusScreen">
+
+    <div class="warning">⚠</div>
+
+    <h2>SYSTEM COMPROMISED</h2>
+
+    <p>
+      ⚠ SIMULATION ONLY ⚠
+    </p>
+
+    <p>
+      Suspicious activity detected...
+    </p>
+
+    <p class="educational">
+      This is a cybersecurity awareness demonstration.
+      No files or device data have been modified.
+    </p>
+
+    <button id="exitBtn" onclick="stopSimulation()">
+      EXIT SIMULATION
+    </button>
+
+  </div>
+
+  <script>
+    function startSimulation() {
+
+      // Mobile vibration (if supported)
+      if ("vibrate" in navigator) {
+        navigator.vibrate([
+          300, 100,
+          300, 100,
+          600
+        ]);
+      }
+
+      // Show fake virus screen
+      document.getElementById("virusScreen")
+        .classList.add("active");
+
+      // Try fullscreen after user interaction
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+    }
+
+    function stopSimulation() {
+
+      // Stop vibration
+      if ("vibrate" in navigator) {
+        navigator.vibrate(0);
+      }
+
+      // Hide fake screen
+      document.getElementById("virusScreen")
+        .classList.remove("active");
+
+      // Exit fullscreen
+      if (document.fullscreenElement &&
+          document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+  </script>
+
+</body>
+</html>
