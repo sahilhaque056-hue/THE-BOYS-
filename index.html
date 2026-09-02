@@ -24,158 +24,141 @@
 
     body {
       background:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
         #080808;
 
       background-size: 25px 25px;
 
-      color: white;
+      color: #fff;
       font-family: 'Press Start 2P', monospace;
 
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
       position: relative;
     }
 
-    /* ---------------------------
-       FLASHING SCREEN
-    ---------------------------- */
+
+    /* =========================
+       FLASH EFFECT
+    ========================= */
 
     body.flashing::before {
       content: "";
+
       position: fixed;
       inset: 0;
 
-      background: rgba(255,255,255,.85);
+      background: #fff;
+
+      opacity: 0;
 
       pointer-events: none;
 
-      z-index: 50;
+      z-index: 100;
 
-      animation: flash 0.22s infinite alternate;
+      animation: screenFlash .18s infinite alternate;
     }
 
-    @keyframes flash {
+    @keyframes screenFlash {
       from {
         opacity: 0;
       }
 
       to {
-        opacity: .55;
+        opacity: .48;
       }
     }
 
-    /* ---------------------------
-       MAIN CONTAINER
-    ---------------------------- */
+
+    /* =========================
+       MAIN
+    ========================= */
 
     .container {
       width: min(92vw, 650px);
+
       text-align: center;
+
       position: relative;
+
       z-index: 5;
     }
 
+
     .top-text {
-      font-size: clamp(10px, 2vw, 14px);
-      margin-bottom: 25px;
-      color: #bdbdbd;
+      color: #777;
+
+      font-size: clamp(8px, 2vw, 12px);
+
       letter-spacing: 2px;
+
+      margin-bottom: 24px;
     }
 
+
     .title {
-      font-size: clamp(22px, 6vw, 46px);
-      margin-bottom: 35px;
+      font-size: clamp(24px, 6vw, 48px);
 
       color: #fff;
 
+      margin-bottom: 35px;
+
       text-shadow:
         4px 4px 0 #333,
-        0 0 20px rgba(255,255,255,.25);
+        0 0 25px rgba(255,255,255,.15);
     }
 
-    /* ---------------------------
-       3D PANEL
-    ---------------------------- */
+
+    /* =========================
+       3D GAME PANEL
+    ========================= */
 
     .game-wrapper {
-      position: relative;
       width: min(90vw, 520px);
+
       margin: auto;
 
       perspective: 1000px;
     }
 
+
     .game-panel {
+      width: 100%;
+
+      aspect-ratio: 16 / 10;
+
       position: relative;
 
-      width: 100%;
-      aspect-ratio: 16 / 10;
+      overflow: hidden;
 
       background: #111;
 
-      border: 7px solid #e8e8e8;
+      border: 7px solid #eee;
 
       box-shadow:
         0 0 0 7px #333,
         0 18px 0 #222,
-        0 25px 35px rgba(0,0,0,.8);
+        0 28px 40px rgba(0,0,0,.8);
 
-      transform: rotateX(3deg);
-
-      overflow: hidden;
+      transform: rotateX(4deg);
     }
 
-    /* Dino-game style ground */
 
-    .ground {
-      position: absolute;
-      left: 5%;
-      right: 5%;
-      bottom: 24%;
-
-      height: 4px;
-
-      background: #eee;
-
-      box-shadow:
-        0 0 0 1px #111;
-    }
-
-    .ground::before,
-    .ground::after {
-      content: "";
-
-      position: absolute;
-      top: 8px;
-
-      width: 35px;
-      height: 3px;
-
-      background: #888;
-    }
-
-    .ground::before {
-      left: 15%;
-    }
-
-    .ground::after {
-      right: 25%;
-    }
-
-    /* Dino-like pixel character */
+    /* =========================
+       PIXEL DINO
+    ========================= */
 
     .pixel-character {
       position: absolute;
 
-      left: 18%;
+      left: 17%;
       bottom: 24%;
 
-      width: 45px;
-      height: 45px;
+      width: 46px;
+      height: 46px;
 
       background: #eee;
 
@@ -198,10 +181,10 @@
         0 68%
       );
 
-      animation: dino 0.5s steps(2) infinite;
+      animation: dinoBounce .5s steps(2) infinite;
     }
 
-    @keyframes dino {
+    @keyframes dinoBounce {
       0% {
         transform: translateY(0);
       }
@@ -215,7 +198,10 @@
       }
     }
 
-    /* Cactus */
+
+    /* =========================
+       CACTUS
+    ========================= */
 
     .cactus {
       position: absolute;
@@ -257,23 +243,65 @@
       background: #eee;
     }
 
-    /* ---------------------------
-       WARNING TEXT
-    ---------------------------- */
+
+    /* =========================
+       GROUND
+    ========================= */
+
+    .ground {
+      position: absolute;
+
+      left: 5%;
+      right: 5%;
+      bottom: 24%;
+
+      height: 4px;
+
+      background: #eee;
+    }
+
+    .ground::before,
+    .ground::after {
+      content: "";
+
+      position: absolute;
+
+      top: 8px;
+
+      height: 3px;
+
+      background: #777;
+    }
+
+    .ground::before {
+      width: 35px;
+      left: 15%;
+    }
+
+    .ground::after {
+      width: 45px;
+      right: 25%;
+    }
+
+
+    /* =========================
+       WARNING
+    ========================= */
 
     .warning {
       margin-top: 30px;
 
-      font-size: clamp(8px, 2vw, 11px);
+      color: #888;
 
-      color: #999;
+      font-size: clamp(8px, 2vw, 11px);
 
       line-height: 1.8;
     }
 
-    /* ---------------------------
-       UNIQUE 3D BUTTON
-    ---------------------------- */
+
+    /* =========================
+       3D BUTTON
+    ========================= */
 
     .start-btn {
       position: relative;
@@ -282,11 +310,11 @@
 
       padding: 20px 45px;
 
-      border: none;
-
-      color: #111;
+      border: 0;
 
       background: #fff;
+
+      color: #111;
 
       font-family: 'Press Start 2P', monospace;
 
@@ -307,6 +335,7 @@
 
     .start-btn span {
       display: block;
+
       transform: skew(12deg);
     }
 
@@ -326,48 +355,20 @@
         5px 5px 0 #222;
     }
 
-    /* ---------------------------
-       FOOTER
-    ---------------------------- */
 
-    .footer {
-      position: fixed;
-
-      bottom: 18px;
-      left: 0;
-      right: 0;
-
-      text-align: center;
-
-      font-size: 8px;
-
-      color: #666;
-
-      z-index: 10;
-    }
-
-    .footer a {
-      color: #aaa;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      color: white;
-    }
-
-    /* ---------------------------
-       ACTIVE PRANK STATE
-    ---------------------------- */
+    /* =========================
+       PRANK ACTIVE
+    ========================= */
 
     body.prank-active .title {
-      animation: shake .08s infinite;
+      animation: titleShake .08s infinite;
     }
 
     body.prank-active .game-panel {
       animation: panelShake .12s infinite;
     }
 
-    @keyframes shake {
+    @keyframes titleShake {
       0% {
         transform: translateX(-2px);
       }
@@ -383,35 +384,63 @@
 
     @keyframes panelShake {
       0% {
-        transform: rotateX(3deg) translate(0,0);
+        transform: rotateX(4deg) translate(0,0);
       }
 
       25% {
-        transform: rotateX(3deg) translate(2px,-1px);
+        transform: rotateX(4deg) translate(2px,-1px);
       }
 
       50% {
-        transform: rotateX(3deg) translate(-2px,1px);
+        transform: rotateX(4deg) translate(-2px,1px);
       }
 
       75% {
-        transform: rotateX(3deg) translate(1px,2px);
+        transform: rotateX(4deg) translate(1px,2px);
       }
 
       100% {
-        transform: rotateX(3deg) translate(0,0);
+        transform: rotateX(4deg) translate(0,0);
       }
     }
 
-    /* ---------------------------
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    .footer {
+      position: fixed;
+
+      bottom: 18px;
+      left: 0;
+      right: 0;
+
+      text-align: center;
+
+      color: #555;
+
+      font-size: 8px;
+
+      z-index: 10;
+    }
+
+    .footer a {
+      color: #888;
+
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #fff;
+    }
+
+
+    /* =========================
        MOBILE
-    ---------------------------- */
+    ========================= */
 
     @media (max-width: 500px) {
-
-      .title {
-        margin-bottom: 25px;
-      }
 
       .game-panel {
         border-width: 5px;
@@ -419,6 +448,7 @@
 
       .start-btn {
         padding: 17px 30px;
+
         font-size: 10px;
       }
 
@@ -430,7 +460,13 @@
   </style>
 </head>
 
+
 <body>
+
+
+  <!-- =========================
+       MAIN CONTENT
+  ========================= -->
 
   <main class="container">
 
@@ -438,9 +474,11 @@
       SYSTEM READY // 404
     </div>
 
+
     <h1 class="title">
       PRANK MODE
     </h1>
+
 
     <div class="game-wrapper">
 
@@ -456,28 +494,42 @@
 
     </div>
 
+
     <p class="warning">
       WARNING: DO NOT PRESS THE BUTTON
     </p>
 
-    <button class="start-btn" id="startButton">
+
+    <button
+      class="start-btn"
+      id="startButton"
+      type="button"
+    >
       <span>START PRANK</span>
     </button>
 
   </main>
 
 
-  <!--
-    IMPORTANT:
-    selfie.mp3 ko isi HTML file ke folder mein rakho.
-  -->
+  <!-- =========================
+       AUDIO
+  ========================= -->
 
-  <audio id="prankAudio" src="selfie.mp3" preload="auto"></audio>
+  <audio
+    id="prankAudio"
+    src="selfie.mp3"
+    preload="auto"
+  ></audio>
 
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer class="footer">
 
     CREATED BY
+
     <a
       href="https://www.instagram.com/be.like_sahil?igsi=MTF3eWhrZ3o1NWdzeQ=="
       target="_blank"
@@ -495,27 +547,60 @@
 
   <script>
 
+    /* =========================
+       VARIABLES
+    ========================= */
+
     const button = document.getElementById("startButton");
+
     const audio = document.getElementById("prankAudio");
 
     let prankStarted = false;
 
+
+    /* =========================
+       HISTORY PROTECTION
+    ========================= */
+
+    /*
+      Ek history entry add kar rahe hain.
+      Browser Back press hone par popstate fire hoga.
+    */
+
+    history.pushState(
+      {
+        prankPage: true
+      },
+      "",
+      location.href
+    );
+
+
+    /* =========================
+       START PRANK
+    ========================= */
+
     button.addEventListener("click", async () => {
 
-      if (prankStarted) return;
+      if (prankStarted) {
+        return;
+      }
+
 
       prankStarted = true;
 
+
       document.body.classList.add("prank-active");
+
       document.body.classList.add("flashing");
 
-      /*
-        Browser autoplay restriction ko bypass karne ke liye
-        audio user ke button click ke andar start kiya ja raha hai.
-      */
+
+      /* Audio loop */
 
       audio.loop = true;
+
       audio.currentTime = 0;
+
 
       try {
 
@@ -523,13 +608,80 @@
 
       } catch (error) {
 
-        console.log("Audio could not start:", error);
+        console.log(
+          "Audio blocked by browser:",
+          error
+        );
 
       }
 
-      button.innerHTML = "<span>PRANK ACTIVATED</span>";
+
+      button.innerHTML =
+        "<span>PRANK ACTIVATED</span>";
 
     });
+
+
+    /* =========================
+       BACK BUTTON
+    ========================= */
+
+    window.addEventListener(
+      "popstate",
+      async () => {
+
+        /*
+          Back press hone par same page ko
+          history mein dobara push karte hain.
+        */
+
+        history.pushState(
+          {
+            prankPage: true
+          },
+          "",
+          location.href
+        );
+
+
+        /*
+          Agar prank already start ho chuka hai
+          to effects ko active rakho.
+        */
+
+        if (prankStarted) {
+
+          document.body.classList.add(
+            "prank-active"
+          );
+
+          document.body.classList.add(
+            "flashing"
+          );
+
+
+          /*
+            Browser audio ko dobara play karne
+            ki request.
+          */
+
+          try {
+
+            await audio.play();
+
+          } catch (error) {
+
+            console.log(
+              "Browser requires user interaction:",
+              error
+            );
+
+          }
+
+        }
+
+      }
+    );
 
   </script>
 
